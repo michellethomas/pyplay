@@ -16,7 +16,7 @@ def remove_all(things, to_remove):
     new_list = []
     for thing in things:
         if thing not in to_remove:
-            new_list.append(i)
+            new_list.append(thing)
     return new_list
 
 
@@ -59,10 +59,24 @@ def argmax(args, f):
     >>> argmax([-3, -2, -1, 0, 1, 2], lambda x: x ** 2)
     -3
     """
+    d = {}
+    for thing in args:
+      d[thing] = f(thing)
+
+    sorted_d = sorted(d.iteritems(),key=itemgetter(1))
+    sorted_d.reverse()
+    return sorted_d[0][0]
 
 
 def argmin(args, f):
     """Return the arg for which f(arg) is minimized."""
+    d = {}
+    for thing in args:
+      d[thing] = f(thing)
+
+    sorted_d = sorted(d.iteritems(),key=itemgetter(1))
+    return sorted_d[0][0]
+
 
 
 def argsort(args, f):
@@ -72,6 +86,18 @@ def argsort(args, f):
     >>> argsort([-3, 0, 1, 2], lambda x: x ** 2)
     [-3, 2, 1, 0]
     """
+    d = {}
+    for thing in args:
+      d[thing] = f(thing)
+
+    sorted_d = sorted(d.iteritems(),key=itemgetter(1))
+    sorted_d.reverse()
+    sorted_args = []
+    for a,b in sorted_d:
+      sorted_args.append(a)
+    return sorted_args
+
+argsort([-3, 0, 1, 2], lambda x: x ** 2)
 
 
 def indices_of(things, target):
@@ -123,7 +149,7 @@ def floats_equal(x, y, epsilon):
     >>> floats_equal(1.00, 1.05, .01)
     False
     """
-
+    return abs(x-y) <= epsilon
 
 def product(nums):
     """Return the product of `nums` seeded with 1.
@@ -131,6 +157,10 @@ def product(nums):
     >>> product([2, 3, 4, 5])
     120
     """
+    total = 1
+    for thing in nums:
+      total = total*thing
+    return total
 
 
 def histogram(things):
@@ -139,12 +169,17 @@ def histogram(things):
     >>> histogram(['a', 'b', 'c', 'b', 'c', 'c'])
     [('c', 3), ('b', 2), ('a', 1)]
     """
-    things_histogram = []
-    count = 0
-    for thing in histogram:
-        for new_thing in things_histogram:
-            if thing == new_thing:
-                
+    things_histogram = {}
+    for thing in things:
+      if thing in things_histogram:
+        things_histogram[thing] = things_histogram[thing]+1
+      else:
+        things_histogram[thing] = 1
+
+    l = []
+    sorted_hist = sorted(things_histogram.iteritems(),key=itemgetter(1))
+    sorted_hist.reverse()
+    return sorted_hist
 
 
 if __name__ == '__main__':
